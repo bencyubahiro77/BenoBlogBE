@@ -5,6 +5,7 @@ import connectDB from './config/dbConfig';
 // import { seedAdmin } from './utils/seedAdmin';
 import authRoutes from "./routes/authRoutes"
 import userRoutes from "./routes/userRoutes";
+import blogRoutes from "./routes/blogRoutes";
 
 dotenv.config();
 // MongoDB connection
@@ -18,6 +19,7 @@ app.use(cors({ origin: '*' }));
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/blog', blogRoutes);
 
 const startServer = async () => {
   // Seed admin user

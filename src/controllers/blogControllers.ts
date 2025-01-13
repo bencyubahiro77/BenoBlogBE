@@ -53,6 +53,7 @@ export const getAllBlog =  async (req: Request, res: Response) => {
         const blogs = await Blog.find()
             .skip(skip)
             .limit(limit)
+            .populate('comments')
 
         const total = await Blog.countDocuments();
         res.status(200).json({
@@ -70,7 +71,7 @@ export const getOneBlog =  async (req: Request, res: Response) => {
     const { uuid } = req.body
 
     try {
-        const blog = await Blog.findOne({ uuid });
+        const blog = await Blog.findOne({ uuid }).populate('comments');
 
         if(!blog){
             return res.status(404).json({message:'blog not found'})

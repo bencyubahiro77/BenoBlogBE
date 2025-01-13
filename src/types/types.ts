@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface IUser {
     uuid:string;
     name: string;
@@ -16,8 +18,16 @@ export interface IBlog {
     category: 'politics' | 'technology' | 'business' | 'health' | 'sports' | 'other'; 
     author: string; 
     authorId:string
+    comments: Types.ObjectId[];
 }
 
 export interface IProtectMiddleware {
     roles: string[];
+}
+
+export interface IComment {
+    uuid: string;
+    name: string;
+    description: string;
+    blogId:string
 }

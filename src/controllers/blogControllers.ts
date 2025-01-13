@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import { Blog } from '../models/blogModel';
 
 export const createBlog = async (req:any, res:Response) => {
-    const { title, coverImage, description, category } = req.body;
+    const { title,description, category } = req.body;
     
     const user = req.user ;
 
@@ -12,13 +12,13 @@ export const createBlog = async (req:any, res:Response) => {
 
     // Check if required fields are provided
     if (!title || !description || !category) {
-        return res.status(400).json({ error: 'Title, description, and category are required.' });
+        return res.status(400).json({ error: 'Title, description and category are required.' });
     }
     
     try {
         const newBlog = new Blog({
             title,
-            coverImage: coverImage || '', 
+            coverImage: req.file?.path ,
             description,
             category,
             author:user.name   // Author's name from the token

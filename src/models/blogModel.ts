@@ -16,6 +16,11 @@ const blogSchema = new Schema<IBlog>({
         type: String, 
         required: true,
         ref: 'User'
+    },
+    authorId: {
+        type: String, 
+        required: true,
+        ref: 'User'
     }},
     { timestamps: true }
 );

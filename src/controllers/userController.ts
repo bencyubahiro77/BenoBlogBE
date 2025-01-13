@@ -83,10 +83,12 @@ export const deleteUser = async (req: Request, res: Response) => {
     const { uuid } = req.body
 
     try {
-        const user = await User.findOneAndDelete({ uuid });
+        const user = await User.findOne({ uuid });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
+
+        await User.findOneAndDelete({uuid})
 
         // Send update email
         await sendDeleteUserEmail(user.email, user.name)

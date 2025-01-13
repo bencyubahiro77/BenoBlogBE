@@ -15,6 +15,7 @@ export interface IBlog {
     description: string;
     category: 'politics' | 'technology' | 'business' | 'health' | 'sports' | 'other'; 
     author: string; 
+    authorId:string
 }
 
 export interface IProtectMiddleware {

@@ -47,7 +47,7 @@ export const getAllBlog =  async (req: Request, res: Response) => {
 
     try {
         const page = parseInt(req.query.page as string) || 1;
-        const limit = parseInt(req.query.limit as string, 10);
+        const limit = parseInt(req.query.limit as string, 10) || 10;
         const skip = (page - 1) * limit;
 
         const blogs = await Blog.find()
@@ -56,10 +56,12 @@ export const getAllBlog =  async (req: Request, res: Response) => {
             .populate('comments')
 
         const total = await Blog.countDocuments();
+        const totalComments = blogs.reduce((total, blog) => total +(blog.comments?.length || 0),0)
         res.status(200).json({
             message: 'Blogs retrieved successfully',
             data: blogs,
             total: total,
+            totalComment: totalComments,
             page: page
         });
     } catch (error) {

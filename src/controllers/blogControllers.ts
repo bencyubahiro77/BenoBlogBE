@@ -130,7 +130,7 @@ export const updateOneBlog = async (req: any, res: Response) => {
 }
 
 export const deleteBlog = async (req: any, res:Response) =>{
-    const { uuid } = req.body;
+    const { uuid } = req.params;
     const user  = req.user;
 
     try {

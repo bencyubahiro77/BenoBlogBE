@@ -80,7 +80,7 @@ export const updateUser = async (req: Request, res: Response) => {
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
-    const { uuid } = req.body
+    const { uuid } = req.params
 
     try {
         const user = await User.findOne({ uuid });

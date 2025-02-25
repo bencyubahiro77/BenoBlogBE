@@ -43,31 +43,45 @@ export const createBlog = async (req:any, res:Response) => {
     }
 }
 
-export const getAllBlog =  async (req: Request, res: Response) => {
-
+export const getAllBlog = async (req: Request, res: Response) => {
     try {
+        // Optional pagination
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const skip = (page - 1) * limit;
 
-        const blogs = await Blog.find()
-            .skip(skip)
-            .limit(limit)
-            .populate('comments')
+        // Optional category filter
+        const category = req.query.category as string;
 
-        const total = await Blog.countDocuments();
-        const totalComments = blogs.reduce((total, blog) => total +(blog.comments?.length || 0),0)
+        // Build query dynamically based on optional parameters
+        const query: any = {};
+        if (category) {
+            query.category = category;
+        }
+
+        // Fetch blogs with optional pagination and category filter
+        const blogsQuery = Blog.find(query).populate('comments');
+        
+        if (req.query.page && req.query.limit) {
+            blogsQuery.skip(skip).limit(limit);
+        }
+
+        const blogs = await blogsQuery;
+        const total = await Blog.countDocuments(query);
+        const totalComments = blogs.reduce((total, blog) => total + (blog.comments?.length || 0), 0);
+
         res.status(200).json({
             message: 'Blogs retrieved successfully',
             data: blogs,
-            total: total,
+            total,
             totalComment: totalComments,
-            page: page
+            page: req.query.page ? page : null,
         });
     } catch (error) {
         res.status(500).json({ error: 'Server error, please try again later.' });
     }
-}
+};
+
 
 export const getOneBlog =  async (req: Request, res: Response) => {
     const { uuid } = req.body
